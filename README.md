@@ -8,6 +8,8 @@
 
 SAP's AI portfolio is vast and fast-moving: RPT-1, Joule, Generative AI Hub, AI Agents, Document AI, HANA PAL/APL, Joule Studio, Agent Fabric... Choosing wrong costs months. This skill helps you choose right, first time.
 
+Based on the official [SAP AI Golden Path](https://architecture.learning.sap.com/docs/ai-golden-path) — SAP's recommended decision framework for AI on BTP.
+
 ---
 
 ## What it does
@@ -20,58 +22,15 @@ You describe your use case. The skill walks you through a structured decision fr
 
 ### Example
 
-> *"We want a chatbot that can read and write data across our S/4HANA, SuccessFactors, and Ariba systems."*
+> *"We want to automatically extract line items from incoming supplier invoices and post them to SAP."*
 
-The skill routes through the decision framework and recommends **Joule Functions/Agents for Agentic Orchestration** — with the exact reasoning, setup steps, and a reminder that confirmation dialogs for write operations are an AI ethics requirement, not optional.
-
----
-
-## Decision framework at a glance
-
-```
-Describe your problem
-        │
-        ▼
-┌───────────────────┐
-│ Is AI right here? │  → No  → Process optimization / Traditional automation
-└───────────────────┘
-        │ Yes
-        ▼
-┌────────────────────────────┐
-│ Prediction / Classification │  → RPT-1 → HANA PAL/APL → Custom ML on AI Core
-│ (no content generation)     │
-└────────────────────────────┘
-        │ OR
-        ▼
-┌──────────────────────────────────┐
-│ Content generation / Reasoning   │
-│ Low agency  → Joule Skill        │
-│             → Embedded AI        │
-│             → Document AI        │
-│ High agency → AI Agent           │
-│               (Dev IDE / Vibe /  │
-│                Joule Functions)  │
-└──────────────────────────────────┘
-```
-
----
-
-## Technologies covered
-
-| Category | Technologies |
-|---|---|
-| Classic ML | SAP-RPT-1, HANA Cloud PAL/APL, Custom ML on AI Core |
-| GenAI Applications | Generative AI Hub, Orchestration Service, SAP AI SDK, CAP LLM Plugin, RAG with HANA Vector Engine |
-| Conversational AI | Joule Skills, Joule Studio |
-| AI Agents | Agent Fabric, Dev IDE (Pro-code), Vibe (Prompt-driven), Joule Functions/Agents |
-| Document Processing | SAP Document AI |
-| Interoperability | A2A Protocol, MCP |
+A common instinct is to reach for a generic LLM. The skill works through the framework and recommends **SAP Document AI as an Embedded AI implementation** — a purpose-built extraction service with pre-trained models for standard document types, managed pipelines, and a UI for human review. No LLM prompt engineering, no hallucination risk on financial data, no custom infrastructure.
 
 ---
 
 ## Quick start
 
-### Claude Code (recommended)
+### Claude Code
 
 ```bash
 # Project-level (recommended)
@@ -99,6 +58,72 @@ Paste the contents of `SKILL.md` into `.cursorrules` or `.windsurfrules`. Add `r
 ### Any LLM or assistant (Claude.ai, ChatGPT, etc.)
 
 Upload `SKILL.md` as a file or paste it as a system prompt. Upload the relevant `references/*.md` files for deeper questions on specific topics.
+
+---
+
+## Technologies covered
+
+| Category | Technologies |
+|---|---|
+| Classic ML | SAP-RPT-1, HANA Cloud PAL/APL, Custom ML on AI Core |
+| GenAI Applications | Generative AI Hub, Orchestration Service, SAP AI SDK, CAP LLM Plugin, RAG with HANA Vector Engine |
+| Conversational AI | Joule Skills, Joule Studio |
+| AI Agents | Agent Fabric, Dev IDE (Pro-code), Vibe (Prompt-driven), Joule Functions/Agents |
+| Document Processing | SAP Document AI |
+| Interoperability | A2A Protocol, MCP |
+
+---
+
+## Decision framework
+
+```mermaid
+flowchart TD
+    A([Business problem]) --> B{Is AI\nactually needed?}
+
+    B -- No --> C[Process optimization /\ntraditional automation]
+    B -- Yes --> D{What does\nthe task require?}
+
+    D -- Predict / classify\nno content generation --> E{Is data\ntabular / relational?}
+
+    E -- No --> H[Custom ML\non SAP AI Core]
+    E -- Yes --> F{Classification or\nregression on\na single table?}
+
+    F -- Yes --> RPT[SAP RPT-1]
+    F -- No --> H
+
+    RPT -- RPT-1 cannot meet\noperational constraints --> G[HANA Cloud\nPAL / APL]
+
+    D -- Generate / reason\ncontent or conversation --> I{Readiness\ngate passed?}
+
+    I -- No --> J[Gather data, define\nmetrics, secure sponsorship]
+    I -- Yes --> K{Agency level?}
+
+    K -- Low / no agency\nsingle or fixed steps --> L{Conversational\ninterface needed?}
+
+    L -- Yes --> M[Joule Skill]
+    L -- No --> O[Embedded AI\nGenAI application]
+    O -- Special case: document\ninput + data extraction --> N[SAP Document AI]
+
+    K -- Medium / high agency\non-the-fly decisions --> P{Broad scope AND\nconversational?}
+
+    P -- Yes --> Q[Joule Functions / Agents\nAgentic Orchestration]
+    P -- No: process agent\nor non-conversational --> R{Team preference?}
+
+    R -- Max control / IDE --> S[Dev IDE\nPro-code agent]
+    R -- Lower barrier --> T[Vibe\nPrompt-driven agent]
+
+    style C fill:#f5f5f5,stroke:#ccc,color:#555
+    style J fill:#f5f5f5,stroke:#ccc,color:#555
+    style RPT fill:#e6f4ea,stroke:#34a853,color:#1a5c2e
+    style G fill:#e6f4ea,stroke:#34a853,color:#1a5c2e
+    style H fill:#e6f4ea,stroke:#34a853,color:#1a5c2e
+    style M fill:#e8f0fe,stroke:#4285f4,color:#1a3c8f
+    style N fill:#e8f0fe,stroke:#4285f4,color:#1a3c8f
+    style O fill:#e8f0fe,stroke:#4285f4,color:#1a3c8f
+    style Q fill:#fce8b2,stroke:#f9ab00,color:#7a4f00
+    style S fill:#fce8b2,stroke:#f9ab00,color:#7a4f00
+    style T fill:#fce8b2,stroke:#f9ab00,color:#7a4f00
+```
 
 ---
 
