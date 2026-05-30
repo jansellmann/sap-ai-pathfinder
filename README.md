@@ -21,43 +21,48 @@ You describe your use case. The skill walks you through a structured decision fr
 - **How to implement it** — architecture patterns, key services, gotchas, and links to official resources
 
 ### Example
-
-> *"We want to automatically extract line items from incoming supplier invoices and post them to SAP."*
-
-A common instinct is to reach for a generic LLM. The skill works through the framework and recommends **SAP Document AI as an Embedded AI implementation** — a purpose-built extraction service with pre-trained models for standard document types, managed pipelines, and a UI for human review. No LLM prompt engineering, no hallucination risk on financial data, no custom infrastructure.
+ 
+You have a new AI use case. You open the SAP Architecture Center. An hour later you have twelve browser tabs open, three plausible technology options, and no clear answer on which one fits — or what the gotchas are before you commit.
+ 
+That's the problem this skill solves.
+ 
+> *"We want a conversational AI that understands employee leave requests in natural language, autonomously gathers the missing information, checks entitlements in real time, and drives the approval workflow in S/4HANA end to end."*
+ 
+Without the skill: conversational + backend integration sounds like an agent. Weeks of Agent Fabric setup later, the team realizes the workflow has fixed steps and no on-the-fly reasoning — a Joule Skill would have done the job in days.
+ 
+With the skill: one question cuts through it — **what's the agency level?** Fixed steps, no on-the-fly decisions → low agency → **Joule Skill**, not an agent. Build it in Joule Studio, connect via OData destination, done.
 
 ---
 
 ## Quick start
 
-### Claude Code
+### Any LLM / chatbot — no setup required (Claude.ai, ChatGPT, Gemini, …)
+ 
+The fastest way to use this skill: just upload the files directly into your chat.
+ 
+1. Upload `SKILL.md` (and optionally the relevant `references/*.md` files for deeper questions)
+2. Describe your use case — the skill takes it from there
 
+No installation, no CLI, no IDE needed.
+ 
+### IDEs and coding agents
+ 
+**One-liner install**:
+ 
 ```bash
-# Project-level (recommended)
-mkdir -p .claude/skills
-git clone https://github.com/jansellmann/sap-ai-pathfinder .claude/skills/sap-ai-pathfinder
-# or just copy the folder
-
-# Then invoke with:
-/sap-ai-pathfinder
+npx skills add jansellmann/sap-ai-pathfinder
 ```
 
-### Other Agent Skills-compatible tools
+### Manual install 
 
+**Clone or copy into the skills directory for your tool:**
+ 
 | Tool | Directory |
 |---|---|
 | Claude Code | `.claude/skills/sap-ai-pathfinder/` |
 | OpenAI Codex | `.agents/skills/sap-ai-pathfinder/` |
 | VS Code Copilot | `.agents/skills/sap-ai-pathfinder/` |
-| Roo Code | `.roo/skills/sap-ai-pathfinder/` |
-
-### Cursor / Windsurf
-
-Paste the contents of `SKILL.md` into `.cursorrules` or `.windsurfrules`. Add `references/` files as additional context when needed.
-
-### Any LLM or assistant (Claude.ai, ChatGPT, etc.)
-
-Upload `SKILL.md` as a file or paste it as a system prompt. Upload the relevant `references/*.md` files for deeper questions on specific topics.
+| Roo Code | `.roo/skills/sap-ai-pathfinder/` |---
 
 ---
 
